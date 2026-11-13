@@ -26,7 +26,7 @@
 		"sound-file": {
 			"type": "file",
 			"name": "Sound File",
-			"description": "The audio file to play on death (mp3, ogg or wav).",
+			"description": "The audio file to play on death (mp3, ogg or wav).", "default": "",
 			"control": {
 				"dialog": "open",
 				"filters": [
