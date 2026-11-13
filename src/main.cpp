@@ -325,7 +325,7 @@ class $modify(TrollPauseLayer, PauseLayer) {
                 spr->setScale(0.6f);
                 auto btn = CCMenuItemExt::createSpriteExtra(spr, [](CCObject*) {
                         auto res = utils::file::openFolder(mediaDir());
-                        if (res.isErr()) {
+                        if (!res) {
                                 log::warn("Percent Troll: could not open the media folder");
                         }
                 });
