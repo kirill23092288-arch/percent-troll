@@ -1,0 +1,57 @@
+{
+	"geode": "5.11.2",
+	"gd": {
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081"
+	},
+	"id": "kiril.percent-troll",
+	"name": "Percent Troll",
+	"version": "v1.0.0",
+	"developer": "kiril",
+	"description": "Plays a sound of your choice when you die at a specific percentage.",
+	"settings": {
+		"target-percent": {
+			"type": "int",
+			"name": "Troll Percent",
+			"description": "Dying anywhere in this percent (e.g. 67 = 67.0% to 67.9999%) triggers the sound.",
+			"default": 67,
+			"min": 1,
+			"max": 99,
+			"control": {
+				"input": true,
+				"slider": true
+			}
+		},
+		"sound-file": {
+			"type": "file",
+			"name": "Sound File",
+			"description": "The audio file to play on death (mp3, ogg or wav).",
+			"control": {
+				"dialog": "open",
+				"filters": [
+					{
+						"files": ["*.mp3", "*.ogg", "*.wav"],
+						"description": "Audio files"
+					}
+				]
+			}
+		},
+		"volume": {
+			"type": "float",
+			"name": "Volume",
+			"default": 1.0,
+			"min": 0.0,
+			"max": 2.0,
+			"control": {
+				"input": true,
+				"slider": true
+			}
+		},
+		"practice-mode": {
+			"type": "bool",
+			"name": "Trigger in Practice Mode",
+			"default": true
+		}
+	}
+}
