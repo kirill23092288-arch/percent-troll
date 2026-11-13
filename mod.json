@@ -1,79 +1,75 @@
 {
-	"geode": "5.11.2",
-	"gd": {
-		"win": "2.2081",
-		"android": "2.2081",
-		"mac": "2.2081"
-	},
-	"id": "kiril.percent-troll",
-	"name": "Percent Troll",
-	"version": "v1.2.0",
-	"developer": "kiril",
-	"description": "Freezes the game and plays a video or sound inside Geometry Dash when you die at a specific percentage. Put <cy>.mpg</c> videos (MPEG-1) or mp3/ogg/wav files in the mod's media folder. Use the <cy>Troll Folder</c> button in the pause menu to open it.",
-	"settings": {
-		"target-percent": {
-			"type": "int",
-			"name": "Troll Percent",
-			"description": "Dying anywhere in this percent (e.g. 67 = 67.0% to 67.9999%) triggers the troll.",
-			"default": 67,
-			"min": 1,
-			"max": 99,
-			"control": {
-				"input": true,
-				"slider": true
-			}
-		},
-		"media-file": {
-			"type": "string",
-			"name": "Media File Name",
-			"description": "Optional. File name inside the media folder (e.g. troll.mpg). Leave empty to pick a random file from the folder. A video plays its sound from a file with the same name (troll.mp3).",
-			"default": ""
-		},
-		"message": {
-			"type": "string",
-			"name": "Top Text",
-			"description": "Text shown at the top of the screen. {percent} is replaced with the percent you died at.",
-			"default": "You died at {percent}%"
-		},
-		"show-text": {
-			"type": "bool",
-			"name": "Show Top Text",
-			"default": true
-		},
-		"freeze-game": {
-			"type": "bool",
-			"name": "Freeze Game",
-			"description": "Stops the game while the troll plays, so you don't respawn and keep dying at 0%.",
-			"default": true
-		},
-		"duration-seconds": {
-			"type": "float",
-			"name": "Freeze Duration (seconds)",
-			"description": "Only used for sound files and text. Videos freeze the game for exactly their own length.",
-			"default": 5.0,
-			"min": 1.0,
-			"max": 60.0,
-			"control": {
-				"input": true,
-				"slider": true
-			}
-		},
-		"volume": {
-			"type": "float",
-			"name": "Volume",
-			"description": "Volume for the sound.",
-			"default": 1.0,
-			"min": 0.0,
-			"max": 2.0,
-			"control": {
-				"input": true,
-				"slider": true
-			}
-		},
-		"practice-mode": {
-			"type": "bool",
-			"name": "Trigger in Practice Mode",
-			"default": true
-		}
-	}
+    "geode":  "5.11.2",
+    "gd":  {
+               "win":  "2.2081",
+               "android":  "2.2081",
+               "mac":  "2.2081"
+           },
+    "id":  "kiril.percent-troll",
+    "name":  "Percent Troll",
+    "version":  "v1.3.0",
+    "developer":  "kiril",
+    "description":  "Freezes the game and plays a video or sound inside Geometry Dash when you die at a specific percentage. Put \u003ccy\u003e.mpg\u003c/c\u003e videos (MPEG-1) or mp3/ogg/wav files in the mod\u0027s media folder. Use the \u003ccy\u003eTroll Folder\u003c/c\u003e button in the pause menu to open it.",
+    "settings":  {
+                     "target-percent":  {
+                                            "name":  "Troll Percent",
+                                            "description":  "Troll when you die from this percent up to this percent plus 0.99.",
+                                            "type":  "int",
+                                            "default":  67,
+                                            "min":  0,
+                                            "max":  99
+                                        },
+                     "media-file":  {
+                                        "name":  "Media File",
+                                        "description":  "File name inside the media folder. Leave empty to pick a random file.",
+                                        "type":  "string",
+                                        "default":  ""
+                                    },
+                     "message":  {
+                                     "name":  "Message",
+                                     "description":  "Text shown at the top of the screen.",
+                                     "type":  "string",
+                                     "default":  "NICE"
+                                 },
+                     "show-text":  {
+                                       "name":  "Show Text",
+                                       "description":  "Show the message at the top.",
+                                       "type":  "bool",
+                                       "default":  true
+                                   },
+                     "freeze-game":  {
+                                         "name":  "Freeze Game",
+                                         "description":  "Freeze the game while the troll plays.",
+                                         "type":  "bool",
+                                         "default":  true
+                                     },
+                     "duration-seconds":  {
+                                              "name":  "Duration (sound or text only)",
+                                              "description":  "How long the troll lasts when there is no video.",
+                                              "type":  "float",
+                                              "default":  3.0,
+                                              "min":  0.5,
+                                              "max":  30.0
+                                          },
+                     "volume":  {
+                                    "name":  "Volume",
+                                    "description":  "Sound volume.",
+                                    "type":  "float",
+                                    "default":  1.0,
+                                    "min":  0.0,
+                                    "max":  1.0
+                                },
+                     "flip-video":  {
+                                        "name":  "Flip Video Upside Down",
+                                        "description":  "Turn this on if the video shows upside down.",
+                                        "type":  "bool",
+                                        "default":  false
+                                    },
+                     "practice-mode":  {
+                                           "name":  "Trigger In Practice Mode",
+                                           "description":  "Also troll in practice mode.",
+                                           "type":  "bool",
+                                           "default":  true
+                                       }
+                 }
 }
