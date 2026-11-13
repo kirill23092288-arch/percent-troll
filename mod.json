@@ -7,14 +7,14 @@
 	},
 	"id": "kiril.percent-troll",
 	"name": "Percent Troll",
-	"version": "v1.0.0",
+	"version": "v1.1.0",
 	"developer": "kiril",
-	"description": "Plays a sound of your choice when you die at a specific percentage.",
+	"description": "Freezes the game and plays a sound or video when you die at a specific percentage.",
 	"settings": {
 		"target-percent": {
 			"type": "int",
 			"name": "Troll Percent",
-			"description": "Dying anywhere in this percent (e.g. 67 = 67.0% to 67.9999%) triggers the sound.",
+			"description": "Dying anywhere in this percent (e.g. 67 = 67.0% to 67.9999%) triggers the troll.",
 			"default": 67,
 			"min": 1,
 			"max": 99,
@@ -23,23 +23,45 @@
 				"slider": true
 			}
 		},
-		"sound-file": {
-			"type": "file",
-			"name": "Sound File",
-			"description": "The audio file to play on death (mp3, ogg or wav).", "default": "",
+		"media-file": {
+			"type": "string",
+			"name": "Media File Name",
+			"description": "File name inside the mod's <cy>media</c> folder (e.g. troll.mp3 or troll.mp4). Leave empty to pick a random file from the folder. Audio: mp3, ogg, wav. Video: mp4 (opens in your Windows video player).",
+			"default": ""
+		},
+		"message": {
+			"type": "string",
+			"name": "Top Text",
+			"description": "Text shown at the top of the screen. {percent} is replaced with the percent you died at.",
+			"default": "You died at {percent}%"
+		},
+		"show-text": {
+			"type": "bool",
+			"name": "Show Top Text",
+			"default": true
+		},
+		"freeze-game": {
+			"type": "bool",
+			"name": "Freeze Game",
+			"description": "Stops the game while the troll plays, so you don't respawn and keep dying at 0%.",
+			"default": true
+		},
+		"duration-seconds": {
+			"type": "float",
+			"name": "Freeze Duration (seconds)",
+			"description": "How long the game stays frozen and the text stays up. Set this to the length of your sound or video.",
+			"default": 5.0,
+			"min": 1.0,
+			"max": 60.0,
 			"control": {
-				"dialog": "open",
-				"filters": [
-					{
-						"files": ["*.mp3", "*.ogg", "*.wav"],
-						"description": "Audio files"
-					}
-				]
+				"input": true,
+				"slider": true
 			}
 		},
 		"volume": {
 			"type": "float",
 			"name": "Volume",
+			"description": "Volume for audio files.",
 			"default": 1.0,
 			"min": 0.0,
 			"max": 2.0,
