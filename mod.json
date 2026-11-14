@@ -7,7 +7,7 @@
            },
     "id":  "kiril.percent-troll",
     "name":  "Percent Troll",
-    "version":  "v1.3.0",
+    "version":  "v1.3.1",
     "developer":  "kiril",
     "description":  "Freezes the game and plays a video or sound inside Geometry Dash when you die at a specific percentage. Put \u003ccy\u003e.mpg\u003c/c\u003e videos (MPEG-1) or mp3/ogg/wav files in the mod\u0027s media folder. Use the \u003ccy\u003eTroll Folder\u003c/c\u003e button in the pause menu to open it.",
     "settings":  {
@@ -27,9 +27,9 @@
                                     },
                      "message":  {
                                      "name":  "Message",
-                                     "description":  "Text shown at the top of the screen.",
+                                     "description":  "Text shown at the top. Use {percent} for the death percent.",
                                      "type":  "string",
-                                     "default":  "NICE"
+                                     "default":  "You died at {percent}%"
                                  },
                      "show-text":  {
                                        "name":  "Show Text",
@@ -65,6 +65,20 @@
                                         "type":  "bool",
                                         "default":  false
                                     },
+                     "video-width-scale":  {
+                                               "name":  "Video Width Scale",
+                                               "description":  "Stretch fix. If the video looks too thin, try 1.78.",
+                                               "type":  "float",
+                                               "default":  1.0,
+                                               "min":  0.2,
+                                               "max":  5.0
+                                           },
+                     "startpos-mode":  {
+                                           "name":  "Trigger From Start Pos",
+                                           "description":  "Also troll when you play from a start pos.",
+                                           "type":  "bool",
+                                           "default":  true
+                                       },
                      "practice-mode":  {
                                            "name":  "Trigger In Practice Mode",
                                            "description":  "Also troll in practice mode.",

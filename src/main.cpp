@@ -1,4 +1,4 @@
-// Percent Troll v1.3 - plays .mp4 directly through Windows Media Foundation
+// Percent Troll v1.3.1 - plays .mp4 directly through Windows Media Foundation
 // (links: mfplat, mfreadwrite, mfuuid, ole32)
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
@@ -88,6 +88,20 @@ static fs::path pickMedia() {
     return files[dist(rng)];
 }
 
+static std::string replacePercent(std::string text, int pct) {
+    std::string val = std::to_string(pct);
+    std::string lower = text;
+    std::transform(lower.begin(), lower.end(), lower.begin(), [](unsigned char c) { return (char)std::tolower(c); });
+    const std::string key = "{percent}";
+    size_t pos = 0;
+    while ((pos = lower.find(key, pos)) != std::string::npos) {
+        text.replace(pos, key.size(), val);
+        lower.replace(pos, key.size(), val);
+        pos += val.size();
+    }
+    return text;
+}
+
 static void openFolderInExplorer(const fs::path& p) {
 #ifdef GEODE_IS_WINDOWS
     ShellExecuteW(nullptr, L"open", p.wstring().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
@@ -120,6 +134,7 @@ struct VideoDecoder {
     int h = 0;
     LONG stride = 0;
     double duration = 0.0;
+    double par = 1.0;
     bool flip = false;
     bool ended = false;
     double curTime = -1.0;
@@ -165,7 +180,12 @@ struct VideoDecoder {
             if (SUCCEEDED(MFGetStrideForBitmapInfoHeader(MFVideoFormat_RGB32.Data1, uw, &st))) stride = st;
             else stride = -(LONG)(uw * 4);
         }
+        UINT32 pn = 1, pd = 1;
+        if (SUCCEEDED(MFGetAttributeRatio(cur, MF_MT_PIXEL_ASPECT_RATIO, &pn, &pd)) && pn > 0 && pd > 0) {
+            par = (double)pn / (double)pd;
+        }
         cur->Release();
+        log::info("Percent Troll: video {}x{} pixel aspect {}", uw, uh, par);
         if (uw == 0 || uh == 0) return false;
         w = (int)uw;
         h = (int)uh;
@@ -340,6 +360,7 @@ struct VideoDecoder {
     int w = 0;
     int h = 0;
     double duration = 0.0;
+    double par = 1.0;
     bool flip = false;
     std::vector<uint8_t> rgba;
     bool open(const fs::path&) { return false; }
@@ -434,9 +455,13 @@ protected:
         m_sprite->setTexture(tex);
         m_sprite->setTextureRect(CCRect(0, 0, (float)m_video->w, (float)m_video->h));
         tex->release();
-        float sx = m_win.width / (float)m_video->w;
+        float ws = (float)(m_video->par * Mod::get()->getSettingValue<double>("video-width-scale"));
+        if (ws < 0.05f) ws = 1.f;
+        float sx = m_win.width / ((float)m_video->w * ws);
         float sy = m_win.height / (float)m_video->h;
-        m_sprite->setScale(sx < sy ? sx : sy);
+        float s = sx < sy ? sx : sy;
+        m_sprite->setScaleX(s * ws);
+        m_sprite->setScaleY(s);
         m_sprite->setVisible(true);
     }
 
@@ -450,6 +475,8 @@ protected:
     }
 
 public:
+    ~TrollOverlay() { g_active = false; }
+
     static TrollOverlay* create(PlayLayer* pl, const fs::path& media, const std::string& text, bool freeze) {
         auto* ret = new TrollOverlay();
         if (ret && ret->init(pl, media, text, freeze)) {
@@ -469,11 +496,11 @@ public:
     }
 };
 
-static void startTroll(PlayLayer* pl) {
+static void startTroll(PlayLayer* pl, int pct) {
     auto media = pickMedia();
     std::string text;
     if (Mod::get()->getSettingValue<bool>("show-text")) {
-        text = Mod::get()->getSettingValue<std::string>("message");
+        text = replacePercent(Mod::get()->getSettingValue<std::string>("message"), pct);
     }
     bool freeze = Mod::get()->getSettingValue<bool>("freeze-game");
 
@@ -495,13 +522,17 @@ class $modify(TrollPlayLayer, PlayLayer) {
         float pct = this->getCurrentPercent();
         bool wasBusy = g_active;
         PlayLayer::destroyPlayer(player, obj);
+
+        bool startpos = this->m_startPosObject != nullptr;
+        log::info("Percent Troll: death at {}% (startpos {}, practice {})", pct, startpos, this->m_isPracticeMode);
         if (wasBusy || g_active) return;
 
         if (this->m_isPracticeMode && !Mod::get()->getSettingValue<bool>("practice-mode")) return;
+        if (startpos && !Mod::get()->getSettingValue<bool>("startpos-mode")) return;
 
         int64_t target = Mod::get()->getSettingValue<int64_t>("target-percent");
         if (pct >= (float)target && pct < (float)(target + 1)) {
-            startTroll(this);
+            startTroll(this, (int)pct);
         }
     }
 };
